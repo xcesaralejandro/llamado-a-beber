@@ -2,9 +2,18 @@
 </ion-header>
 
 <ion-content>
-  <ion-button expand="full" fill="outline" (click)="sound()">
-    <ion-icon name="{{ btn_icon }}"></ion-icon>
-    {{ btn_text }}
+  <div *ngFor="let song of songs">
+    <ion-label>{{ song.name }} - {{ song.author }}</ion-label>
+    <ion-button  fill="outline" (click)="sound(song)">
+        <ion-icon name="{{ song.icon }}"></ion-icon>
+    </ion-button>
+
+    <ion-button  fill="outline" (click)="effects(song)">
+      FX - {{ song.fx }}
   </ion-button>
-  <img id="cerveza-gif" src="assets/{{ image }}" />
+  <ion-range min="0" max="1" step ="0.1" color="secondary" (ionChange)="volume(song)" [(ngModel)]="song.volume" #ctrl="ngModel">
+    <ion-label slot="start">0</ion-label>
+    <ion-label slot="end">1</ion-label>
+  </ion-range>
+  </div>
 </ion-content>

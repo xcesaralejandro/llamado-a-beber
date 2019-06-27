@@ -8,34 +8,121 @@ import Pizzicato from 'pizzicato';
 })
 export class HomePage {
 
-  public btn_text:String;
-  public btn_icon:String;
-  public image:String;
-  public static sound:Boolean
-  protected amar_azul:Pizzicato;
+  public songs : Array<any>
+  public fx : any
+
   constructor() {
-    HomePage.sound = false
-    this.btn_text = 'Iniciar el llamado a beberrr';
-    this.btn_icon = 'musical-note';
-    this.image = 'perrito_triste.gif';
+    this.songs = [
+      {
+        'name' : 'Tomo licor',
+        'author' : 'Amar Azul',
+        'file_name' : 'amar_azul.mp3',
+        'status' : 'stop',
+        'icon' : 'play',
+        'fx' : 'on',
+        'pizzicato' : null,
+        'volume' : 1 
+      },
+      {
+        'name' : 'Check em',
+        'author' : 'Skrillex',
+        'file_name' : 'Skrillex - Check em.mp3',
+        'status' : 'stop',
+        'icon' : 'play',
+        'fx' : 'on',
+        'pizzicato' : null,
+        'volume' : 1
+      },
+      {
+        'name' : 'Lluvia',
+        'author' : 'Genio Ft. Cosculluela',
+        'file_name' : 'Genio Ft. Cosculluela - Lluvia.mp3',
+        'status' : 'stop',
+        'icon' : 'play',
+        'fx' : 'on',
+        'pizzicato' : null,
+        'volume' : 1
+      },
+      {
+        'name' : 'Estilo De Vida',
+        'author' : 'Justin Quiles',
+        'file_name' : 'Justin Quiles - Estilo De Vida.mp3',
+        'status' : 'stop',
+        'icon' : 'play',
+        'fx' : 'on',
+        'pizzicato' : null,
+        'volume' : 1
+      },
+      {
+        'name' : 'Comerte A Besos',
+        'author' : 'Nicky Jam Y Wisin',
+        'file_name' : 'Justin Quiles Ft. Nicky Jam Y Wisin - Comerte A Besos.mp3',
+        'status' : 'stop',
+        'icon' : 'play',
+        'fx' : 'on',
+        'pizzicato' : null,
+        'volume' : 1
+      },
+      {
+        'name' : 'Latina',
+        'author' : 'Reykon Ft. Maluma',
+        'file_name' : 'Reykon Ft. Maluma - Latina.mp3',
+        'status' : 'stop',
+        'icon' : 'play',
+        'fx' : 'on',
+        'pizzicato' : null,
+        'volume' : 1
+      },
+      {
+        'name' : 'Pega Pega',
+        'author' : 'Tito El Bambino',
+        'file_name' : 'Tito El Bambino - Pega Pega.mp3',
+        'status' : 'stop',
+        'icon' : 'play',
+        'fx' : 'on',
+        'pizzicato' : null,
+        'volume' : 1
+      }
+
+    ];
+    this.fx = {
+      'RingModulator' : new Pizzicato.Effects.RingModulator({
+          speed: 30,
+          distortion: 1,
+          mix: 0.5
+      })
+    }
   }
 
   ngOnInit(){
-    this.amar_azul = new Pizzicato.Sound('/assets/amar_azul.mp3');
+    this.songs.forEach(song => {
+      song.pizzicato = new Pizzicato.Sound('/assets/' + song.file_name)
+    });
   }
 
-  sound(){
-    HomePage.sound = !HomePage.sound
-    if(HomePage.sound){
-      this.amar_azul.play();
-      this.btn_text = 'Detener el llamado a beberrr';
-      this.btn_icon = 'volume-off';
-      this.image = 'cervecita.gif';
+  sound(song){
+    if(song.status == 'stop'){
+      song.status = 'play'
+      song.pizzicato.play()
+      song.icon = 'square'
     }else{
-      this.btn_text = 'Iniciar el llamado a beberrr';
-      this.amar_azul.stop();
-      this.btn_icon = 'musical-note';
-      this.image = 'perrito_triste.gif';
+      song.status = 'stop'
+      song.pizzicato.stop()
+      song.icon = 'play'
     }
+  }
+  
+  effects(song){
+    if(song.fx == 'on'){
+      song.fx = 'off'
+      song.pizzicato.addEffect(this.fx.RingModulator);
+    }else{
+      song.fx = 'on'
+      song.pizzicato.removeEffect(this.fx.RingModulator)
+    }
+  }
+
+  volume (song){
+    song.pizzicato.volume = song.volume 
   }
 }
